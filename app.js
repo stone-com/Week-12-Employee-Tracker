@@ -63,10 +63,20 @@ const userPrompt = () => {
 
 // function to view all departments
 const viewDepartments = () => {
-    // findall departments then log them in a table in the console
-    Department.findAll()
-    .then(departments => {
-        console.table(departments, ['id', 'name']);
-        userPrompt();
-    })
-}
+  // findall departments then log them in a table in the console
+  Department.findAll().then((departments) => {
+    console.table(departments, ['id', 'name']);
+    userPrompt();
+  });
+};
+
+// function to view all roles
+const viewRoles = () => {
+  // findall roles, include department, then display table with role id, title, salary, and department name
+  Role.findAll({
+    include: [{ model: Department }],
+  }).then((roles) => {
+    console.table(roles, ['id', 'title', 'salary', 'Department.name']);
+    userPrompt();
+  });
+};

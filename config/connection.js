@@ -9,6 +9,8 @@ const sequelize = new Sequelize(
     host: localhost,
     dialect: 'mysql',
     port: 3306,
+    // set query to raw = true to return plain results with queries
+    query: { raw: true },
   }
 );
 
