@@ -60,3 +60,13 @@ const userPrompt = () => {
       }
     });
 };
+
+// function to view all departments
+const viewDepartments = () => {
+    // findall departments then log them in a table in the console
+    Department.findAll()
+    .then(departments => {
+        console.table(departments, ['id', 'name']);
+        userPrompt();
+    })
+}
