@@ -80,3 +80,22 @@ const viewRoles = () => {
     userPrompt();
   });
 };
+
+// function to view all employes
+const viewEmployees = () => {
+  // findall employees, include Role, then display table with id, first and last name, role title, salary, manager id, and department id.
+  Employee.findAll({
+    include: [{ model: Role }],
+  }).then((employees) => {
+    console.table(employees, [
+      'id',
+      'first_name',
+      'last_name',
+      'Role.title',
+      'Role.salary',
+      'manager_id',
+      'Role.department_id',
+    ]);
+    userPrompt();
+  });
+};
