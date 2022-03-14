@@ -39,6 +39,7 @@ Employee.init(
     sequelize,
     tableName: 'employee',
     freezeTableName: true,
+    timestamps: false,
   }
 );
 
