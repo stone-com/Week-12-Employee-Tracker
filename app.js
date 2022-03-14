@@ -99,3 +99,33 @@ const viewEmployees = () => {
     userPrompt();
   });
 };
+
+// function to add a department
+const addDepartment = () => {
+  // prompt user to enter name for new department to add
+  inquirer
+    .prompt([
+      {
+        type: 'input',
+        message: 'Enter the name of the department you want to add:',
+        name: 'name',
+      },
+    ])
+    // create a new department passing in the user inputted name as the name of department
+    .then((answer) => {
+      Department.create({
+        name: answer.name,
+      })
+        // Console log successful creation
+        .then(() => {
+          console.log(
+            `New department with name: ${answer.name} successfully created!`
+          );
+          userPrompt();
+        })
+        .catch((err) => {
+          console.log(err);
+          userPrompt();
+        });
+    });
+};
