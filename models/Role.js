@@ -36,6 +36,4 @@ Role.init(
   }
 );
 
-Role.belongsTo(Department, { foreignKey: 'department_id' });
-
 module.exports = Role;

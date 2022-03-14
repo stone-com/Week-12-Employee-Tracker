@@ -43,7 +43,4 @@ Employee.init(
   }
 );
 
-Employee.belongsTo(Employee, { as: 'manager', foreignKey: 'manager_id' });
-Employee.belongsTo(Role, { foreignKey: 'role_id' });
-
 module.exports = Employee;
