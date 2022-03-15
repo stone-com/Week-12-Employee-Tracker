@@ -129,3 +129,63 @@ const addDepartment = () => {
         });
     });
 };
+
+// function to add a new role
+const addRole = () => {
+  // initialize empty array of departments, will be populated by findall query and used as selections in inquirer prompt
+  let depArray = [];
+  // find all departments
+  Department.findAll().then((departments) => {
+    departments.forEach((department) => {
+      //   create a string with dep id and dep name and push it to deparray
+      depArray.push(department.id + ' ' + department.name);
+    });
+    //   prompt user for info about new role
+    inquirer
+      .prompt([
+        {
+          type: 'input',
+          message: 'Enter the title of the role',
+          name: 'title',
+        },
+        {
+          type: 'input',
+          message: 'Enter the salary for the role',
+          name: 'salary',
+        },
+        {
+          type: 'list',
+          message: 'Choose a department',
+          name: 'Department',
+          choices: depArray,
+        },
+      ])
+      .then((answer) => {
+        // declare depId variable, will be set and then used when creating role
+        let depId;
+        departments.forEach((department) => {
+          // loop through all departments, if id + name = user answer, then set depId variable to the department id.
+          // depId variable will be used to pass in when we create the role.
+          if (department.id + ' ' + department.name === answer.department) {
+            depId = department.id;
+          }
+        });
+        Role.create({
+          // create new role passing in user  prompt answers, and passing in depId variable.
+          title: answer.title,
+          salary: answer.salary,
+          department_id: depId,
+        })
+          .then(() => {
+            console.log(
+              `New Role called ${answer.title} has been successfully created!`
+            );
+            userPrompt();
+          })
+          .catch((err) => {
+            console.log(err);
+            userPrompt();
+          });
+      });
+  });
+};
