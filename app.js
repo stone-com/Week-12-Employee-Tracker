@@ -19,7 +19,6 @@ const userPrompt = () => {
           'Add a role',
           'Add an employee',
           'Update employee role',
-          'Update employee manager',
           'Delete employee',
           'Quit',
         ],
@@ -48,9 +47,6 @@ const userPrompt = () => {
           break;
         case 'Update employee role':
           updateEmployeeRole();
-          break;
-        case 'Update employee manager':
-          updateEmployeeManager();
           break;
         case 'Delete employee':
           deleteEmployee();
@@ -189,3 +185,65 @@ const addRole = () => {
       });
   });
 };
+
+// function to add an employee
+const addEmployee = () => {
+  // initilize variables as empty arrays for role and manager arrays
+  let managerArray = [];
+  let roleArray = [];
+  // find all roles and push them to role array.
+  Role.findAll().then((roles) => {
+    roles.forEach((role) => {
+      roleArray.push(role.title);
+    });
+    // find all employees, then push each one into manager array
+    Employee.findAll().then((employees) => {
+      employees.forEach((employee) => {
+        managerArray.push(employee.first_name + ' ' + employee.last_name);
+      });
+    });
+    // prompt user for information about new employee
+    inquirer
+      .prompt([
+        {
+          type: 'input',
+          message: 'Enter new employee first name:',
+          name: 'first_name',
+        },
+        {
+          type: 'input',
+          message: 'Enter new employee last name:',
+          name: 'last_name',
+        },
+        {
+          type: 'list',
+          message: 'Choose role:',
+          name: 'role',
+          choices: roleArray,
+        },
+        {
+          type: 'list',
+          message: 'Choose the manager:',
+          name: 'manager',
+          choices: managerArray,
+        },
+      ])
+      .then((answer) => {
+        //   create variables for role and manager id, will be used to pass in when creating employee.
+        let managerId;
+        let roleId;
+        // loop through roll array and compare role titles to user answer, if matches then set roleid variable to role.id
+        roleArray.forEach((role) => {
+          if (role.title === answer.role) {
+            roleId = role.id;
+          }
+        });
+        emp;
+      });
+  });
+};
+
+//  run db.sync to start the app and connect to db
+db.sync({ force: true }).then(() => {
+  userPrompt();
+});
