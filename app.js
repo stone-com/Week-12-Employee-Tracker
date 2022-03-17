@@ -71,6 +71,7 @@ const viewRoles = () => {
   // findall roles, include department, then display table with role id, title, salary, and department name
   Role.findAll({
     include: [{ model: Department }],
+    raw: true,
   }).then((roles) => {
     console.table(roles, ['id', 'title', 'salary', 'Department.name']);
     userPrompt();
@@ -232,13 +233,38 @@ const addEmployee = () => {
         //   create variables for role and manager id, will be used to pass in when creating employee.
         let managerId;
         let roleId;
-        // loop through roll array and compare role titles to user answer, if matches then set roleid variable to role.id
-        roleArray.forEach((role) => {
+        // loop through roles and compare role titles to user answer, if matches then set roleid variable to role.id
+        roles.forEach((role) => {
           if (role.title === answer.role) {
             roleId = role.id;
           }
         });
-        emp;
+        // loop through employees, if first and last name match user answer, set managerId variable to employee.id
+        employees.forEach((employee) => {
+          if (
+            employee.first_name + ' ' + employee.last_name ===
+            answer.manager
+          ) {
+            managerId = employee.id;
+          }
+        });
+        // create new Employee passing in user answers.
+        Employee.create({
+          first_name: answer.first_name,
+          last_name: answer.last_name,
+          role_id: roleId,
+          manager_id: managerId,
+        })
+          .then(() => {
+            console.log(
+              `New employee ${answer.first_name} ${answer.last_name} has been added.`
+            );
+            userPrompt();
+          })
+          .catch((err) => {
+            console.log(err);
+            userPrompt();
+          });
       });
   });
 };
