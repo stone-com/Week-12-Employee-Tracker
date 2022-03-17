@@ -269,6 +269,26 @@ const addEmployee = () => {
   });
 };
 
+// function to update employee role
+
+const updateEmployeeRole = () => {
+  // create variables employeearray and rolearray. will findall and store results into these arrays
+  let roleArray = [];
+  let employeeArray = [];
+  // findall employees and push first and last name to array
+  Employee.findAll().then((employees) => {
+    employees.forEach((employee) => {
+      employeeArray.push(employee.first_name + ' ' + employee.last_name);
+    });
+    // findall roles and push the results to rolearray
+    Role.findAll().then((roles) => {
+      roles.forEach((role) => {
+        roleArray.push(role.title);
+      });
+    });
+  });
+};
+
 //  run db.sync to start the app and connect to db
 db.sync({ force: true }).then(() => {
   userPrompt();
