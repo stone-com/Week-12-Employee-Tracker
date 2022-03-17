@@ -285,6 +285,24 @@ const updateEmployeeRole = () => {
       roles.forEach((role) => {
         roleArray.push(role.title);
       });
+      // prompt user for employee and role info
+      inquirer.prompt([
+        {
+          type: 'list',
+          message: 'Choose employee:',
+          name: 'employee',
+          choices: employeeArray,
+        },
+        {
+          type: 'list',
+          message: 'Choose role:',
+          name: 'role',
+          choices: roleArray,
+        },
+      ])
+      .then(answer => {
+        // NEEED TO DO THIS PART NOW!!
+      })
     });
   });
 };
