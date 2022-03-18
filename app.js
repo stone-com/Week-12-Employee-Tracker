@@ -343,13 +343,51 @@ const updateEmployeeRole = () => {
   });
 };
 
-
 // function to delete employees
-const deleteEmployee =() => {
-  
-}
-
-
+const deleteEmployee = () => {
+  // create empty array for employees
+  let employeeArray = [];
+  Employee.findAll().then((employees) => {
+    employees.forEach((employee) => {
+      // push first name, last name, and id to employeearray
+      employeeArray.push(
+        employee.id + ' ' + employee.first_name + ' ' + employee.last_name
+      );
+    });
+    // prompt user with list of all employees from array
+    inquirer.prompt([
+      {
+        type: 'list',
+        message: 'Choose who to delete',
+        name: 'employee',
+        choices: employeeArray,
+      },
+    ])
+    .then(answer => {
+      let employeeId = null;
+      employees.forEach(employee => {
+        if (
+          // loop through employees, if answer matches use answer, set employeeId variable
+          employee.id + ' ' + employee.first_name + ' ' + employee.last_name === answer.emplooyee
+        ) {
+          employeeId = employee.id
+        }
+      });
+      // destroy method, specifiying by id.
+      Employee.destroy({
+        where: {
+          id: employeeId
+        }
+      }).then(() => {
+        console.log(`That employee ${answer.employee} is outta here!`);
+        userPrompt();
+      })
+    })
+    .catch( err => {
+			console.log(err);
+			displayMenu();
+  });
+};
 
 //  run db.sync to start the app and connect to db
 db.sync({ force: true }).then(() => {
