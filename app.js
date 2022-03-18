@@ -286,26 +286,70 @@ const updateEmployeeRole = () => {
         roleArray.push(role.title);
       });
       // prompt user for employee and role info
-      inquirer.prompt([
-        {
-          type: 'list',
-          message: 'Choose employee:',
-          name: 'employee',
-          choices: employeeArray,
-        },
-        {
-          type: 'list',
-          message: 'Choose role:',
-          name: 'role',
-          choices: roleArray,
-        },
-      ])
-      .then(answer => {
-        // NEEED TO DO THIS PART NOW!!
-      })
+      inquirer
+        .prompt([
+          {
+            type: 'list',
+            message: 'Choose employee:',
+            name: 'employee',
+            choices: employeeArray,
+          },
+          {
+            type: 'list',
+            message: 'Choose role:',
+            name: 'role',
+            choices: roleArray,
+          },
+        ])
+        .then((answer) => {
+          // Declare employee and role id variables
+          let employeeId;
+          let roleId;
+
+          employees.forEach((employee) => {
+            // check for a match, change id
+            if (
+              employee.first_name + ' ' + employee.last_name ===
+              answer.employee
+            ) {
+              employeeId = employee.id;
+            }
+          });
+          roles.forEach((role) => {
+            // check for a match, change id
+            if (role.title === answer.role) {
+              roleId = role.id;
+            }
+          });
+          // call update method, change value of role id for that emoloyee
+          Employee.update(
+            {
+              role_id: roleId,
+            },
+            {
+              where: {
+                id: employeeId,
+              },
+            }
+          ).then(() => {
+            // log errors
+            console.log(
+              ` ${answer.employee} has successfully changed his role.`
+            );
+            userPrompt();
+          });
+        });
     });
   });
 };
+
+
+// function to delete employees
+const deleteEmployee =() => {
+  
+}
+
+
 
 //  run db.sync to start the app and connect to db
 db.sync({ force: true }).then(() => {
