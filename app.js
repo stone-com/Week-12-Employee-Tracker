@@ -73,7 +73,7 @@ const viewRoles = () => {
     include: [{ model: Department }],
     raw: true,
   }).then((roles) => {
-    console.table(roles, ['id', 'title', 'salary', 'Department.name']);
+    console.table(roles, ['id', 'title', 'salary', 'name']);
     userPrompt();
   });
 };
@@ -400,3 +400,4 @@ const deleteEmployee = () => {
 db.sync({ force: true }).then(() => {
   userPrompt();
 });
+
