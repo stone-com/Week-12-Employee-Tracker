@@ -355,37 +355,44 @@ const deleteEmployee = () => {
       );
     });
     // prompt user with list of all employees from array
-    inquirer.prompt([
-      {
-        type: 'list',
-        message: 'Choose who to delete',
-        name: 'employee',
-        choices: employeeArray,
-      },
-    ])
-    .then(answer => {
-      let employeeId = null;
-      employees.forEach(employee => {
-        if (
-          // loop through employees, if answer matches use answer, set employeeId variable
-          employee.id + ' ' + employee.first_name + ' ' + employee.last_name === answer.emplooyee
-        ) {
-          employeeId = employee.id
-        }
-      });
-      // destroy method, specifiying by id.
-      Employee.destroy({
-        where: {
-          id: employeeId
-        }
-      }).then(() => {
-        console.log(`That employee ${answer.employee} is outta here!`);
-        userPrompt();
+    inquirer
+      .prompt([
+        {
+          type: 'list',
+          message: 'Choose who to delete',
+          name: 'employee',
+          choices: employeeArray,
+        },
+      ])
+      .then((answer) => {
+        let employeeId = null;
+        employees.forEach((employee) => {
+          if (
+            // loop through employees, if answer matches use answer, set employeeId variable
+            employee.id +
+              ' ' +
+              employee.first_name +
+              ' ' +
+              employee.last_name ===
+            answer.emplooyee
+          ) {
+            employeeId = employee.id;
+          }
+        });
+        // destroy method, specifiying by id.
+        Employee.destroy({
+          where: {
+            id: employeeId,
+          },
+        }).then(() => {
+          console.log(`That employee ${answer.employee} is outta here!`);
+          userPrompt();
+        });
       })
-    })
-    .catch( err => {
-			console.log(err);
-			displayMenu();
+      .catch((err) => {
+        console.log(err);
+        displayMenu();
+      });
   });
 };
 
