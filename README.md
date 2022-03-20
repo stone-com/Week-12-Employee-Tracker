@@ -24,6 +24,9 @@ The app uses the following npm packages:
 Launch the application using ```node index.js```
 
 ## Links
+https://dashboard.heroku.com/apps/sltc-employee-tracker  
+
+https://drive.google.com/file/d/12azz77dne3o7-FppkqOpFgCHYmx7pSlM/view?usp=sharing
 
 
 
